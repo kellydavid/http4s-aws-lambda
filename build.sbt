@@ -35,12 +35,18 @@ lazy val server = (project in file("server"))
 
 lazy val resourceHello = (project in file("resource-hello"))
   .settings(baseSettings ++ Seq(
-    name := "resource-hello"
+    name := "resource-hello",
+    libraryDependencies ++= Seq(
+      "io.github.howardjohn" %% "http4s-lambda" % "0.4.0-SNAPSHOT"
+    )
   ))
 
 lazy val resourceJoke = (project in file("resource-joke"))
   .settings(baseSettings ++ Seq(
-    name := "resource-joke"
+    name := "resource-joke",
+    libraryDependencies ++= Seq(
+      "io.github.howardjohn" %% "http4s-lambda" % "0.4.0-SNAPSHOT"
+    )
   ))
 
 lazy val customScalacOptions = Seq(
