@@ -1,13 +1,14 @@
 package io.kellydavid.http4sawslambda
 
-import cats.effect.{ConcurrentEffect, ContextShift, Timer}
-import cats.implicits._
 import fs2.Stream
 import org.http4s.client.blaze.BlazeClientBuilder
 import org.http4s.implicits._
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.Logger
 import fs2.Stream
+import cats.effect.{ConcurrentEffect, ContextShift, Timer}
+import cats.implicits._
+
 import scala.concurrent.ExecutionContext.global
 
 object Http4sawslambdaServer {
@@ -23,8 +24,8 @@ object Http4sawslambdaServer {
       // want to extract a segments not checked
       // in the underlying routes.
       httpApp = (
-        Http4sawslambdaRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
-        Http4sawslambdaRoutes.jokeRoutes[F](jokeAlg)
+        HelloRoutes.helloWorldRoutes[F](helloWorldAlg) <+>
+          JokeRoutes.jokeRoutes[F](jokeAlg)
       ).orNotFound
 
       // With Middlewares in place
