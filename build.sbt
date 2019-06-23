@@ -1,3 +1,5 @@
+import sbt.Keys.libraryDependencies
+
 val Http4sVersion = "0.20.3"
 val CirceVersion = "0.11.1"
 val Specs2Version = "4.1.0"
@@ -10,16 +12,16 @@ lazy val baseSettings = Seq(
   scalaVersion := "2.12.8",
   scalacOptions ++= customScalacOptions,
   libraryDependencies ++= Seq(
-    "org.http4s"      %% "http4s-blaze-server" % Http4sVersion,
-    "org.http4s"      %% "http4s-blaze-client" % Http4sVersion,
-    "org.http4s"      %% "http4s-circe"        % Http4sVersion,
-    "org.http4s"      %% "http4s-dsl"          % Http4sVersion,
-    "io.circe"        %% "circe-generic"       % CirceVersion,
-    "org.specs2"      %% "specs2-core"         % Specs2Version % "test",
-    "ch.qos.logback"  %  "logback-classic"     % LogbackVersion
+    "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
+    "org.http4s" %% "http4s-blaze-client" % Http4sVersion,
+    "org.http4s" %% "http4s-circe" % Http4sVersion,
+    "org.http4s" %% "http4s-dsl" % Http4sVersion,
+    "io.circe" %% "circe-generic" % CirceVersion,
+    "org.specs2" %% "specs2-core" % Specs2Version % "test",
+    "ch.qos.logback" % "logback-classic" % LogbackVersion
   ),
-  addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.10.3"),
-  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.0")
+  addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3"),
+  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % "0.3.0")
 )
 
 lazy val http4sawslambda = project.aggregate(
@@ -30,7 +32,15 @@ lazy val http4sawslambda = project.aggregate(
 
 lazy val server = (project in file("server"))
   .settings(baseSettings ++ Seq(
-    name := "server"
+    name := "server",
+    libraryDependencies ++= Seq(
+      "io.github.howardjohn" %% "http4s-lambda" % "0.4.0-SNAPSHOT"
+    )
+  )).dependsOn(resourceHello, resourceJoke)
+
+lazy val appLambda = (project in file("app-lambda"))
+  .settings(baseSettings ++ Seq(
+    name := "app-lambda"
   )).dependsOn(resourceHello, resourceJoke)
 
 lazy val resourceHello = (project in file("resource-hello"))
